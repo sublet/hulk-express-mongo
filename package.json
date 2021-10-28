@@ -1,5 +1,5 @@
 {
-  "name": "@sublet/hulk-express-server",
+  "name": "@sublet/hulk-express-mongo",
   "version": "1.0.0",
   "description": "Pre-built Express server that allows you to get up and running quickly.",
   "main": "src/index.js",

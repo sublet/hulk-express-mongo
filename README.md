@@ -22,11 +22,11 @@ PAPERTRAIL_PORT=*****
 Install by enter one of the commands below.
 
 ```
-npm install @sublet/hulk-express-server
+npm install @sublet/hulk-express-mongo
 
 -or-
 
-yarn add @sublet/hulk-express-server
+yarn add @sublet/hulk-express-mongo
 ```
 
 Once installed, create an `app.js` file at the root level 
@@ -50,7 +50,7 @@ const config = {
   }
 }
 
-const server = require('@sublet/hulk-express-server')(config)
+const server = require('@sublet/hulk-express-mongo')(config)
 
 server.setupAndCreate()
 

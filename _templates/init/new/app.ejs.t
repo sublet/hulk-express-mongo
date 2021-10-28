@@ -32,7 +32,7 @@ const databaseConfig = {
 
 config.dataLayer = require('@sublet/hulk-dl-mongo')(databaseConfig)
 
-const server = require('@sublet/hulk-express-server')(config)
+const server = require('@sublet/hulk-express-mongo')(config)
 
 server.setupAndCreate()
 
