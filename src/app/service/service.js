@@ -86,7 +86,7 @@ class BaseService {
   }
   
   async update() {
-    return await this._mongodb.update(...arguments).exec()
+    return await this._mongodb.updateOne(...arguments).exec()
   }
 
   async updateMany() {
