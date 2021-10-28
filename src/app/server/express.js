@@ -18,7 +18,7 @@ class Server {
     this._wrapAsync = fn
   }
 
-  setup() {
+  setup(config = {}) {
     if (!this._wrapAsync) throw new Error('wrapAsync method is invalid.')
 
     const bodyParseJson = bodyParser.json({
@@ -31,7 +31,7 @@ class Server {
     const bodyParseEncoded = bodyParser.urlencoded({ extended: false });
 
     this._app.use(cors());
-    this._app.use(expressLogger()); // Log Request
+    this._app.use(expressLogger(config.ignorePaths || [])); // Log Request
     this._app.use(bodyParseJson);
     this._app.use(bodyParseEncoded);
 
