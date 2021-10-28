@@ -28,3 +28,7 @@ publish:
 
 publish-prod:
 	npm publish --access public
+
+publish-post:
+	cp ./package.json ./dist/package.json
+	cp -R ./_templates ./dist/_templates
