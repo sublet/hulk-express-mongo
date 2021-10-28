@@ -74,8 +74,56 @@ const server = require('../app');
 server.start()
 ```
 
-### App Folder
+## Quick Project Setup: CLI
 
-I tend to keep all of my application logic in a folder called `app`. This contains all of the Routes, Controllers, and services you need to make your app work.
+Install the library globaly so you can access the CLI.
 
-... More to follow.
+```
+npm i -g @sublet/hulk-express-mongo
+```
+
+```
+hulk-smash init
+```
+
+Create an API
+
+```
+hulk-smash template:api --title users
+```
+
+Create a Service
+
+```
+hulk-smash template:service --title users
+```
+
+Copy Default Environment Variables
+
+```
+cp sample.env .env
+```
+
+Scripts section to make Makefile commands work
+
+```
+"scripts": {
+  "start": "sls offline start --skipCacheInvalidation --dontPrintOutput --noPrependStageInUrl --lambdaPort 3005 --httpPort 3040",
+  "test": "NODE_ENV=test nyc --reporter=html --reporter=text make test-all",
+  "lint": "eslint ./"
+},
+"engines": {
+  "node": ">=14.15.1"
+},
+```
+
+### Install Dependencies
+
+```
+npm i @sublet/hulk-express-mongo app-module-path aws-config aws-sdk axios bluebird boom ejs md5 moment numeral request serverless-http uuidv4
+```
+
+### Install Dev Dependencies
+```
+npm i chai chai-http eslint mocha nyc pre-commit require-directory serverless serverless-offline should supertest --save-dev
+```
