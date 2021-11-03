@@ -14,6 +14,14 @@ class BaseModel {
     return null
   }
 
+  preHooks() {
+    return null
+  }
+
+  postHooks() {
+    return null
+  }
+
   defaultSchema() {
     return {
       _id: mongo.getId(),
@@ -38,7 +46,7 @@ class BaseModel {
 
   build() {
     let structure = _.extend(this.defaultSchema(), this.schema())
-    return mongo.buildModel(this._name, structure, this.methods())
+    return mongo.buildModel(this._name, structure, this.methods(), this.preHooks(), this.postHooks())
   }
 
 }

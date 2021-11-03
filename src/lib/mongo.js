@@ -66,7 +66,7 @@ class Mongo {
     return params
   }
 
-  buildModel(name, structure, methods = null) {
+  buildModel(name, structure, methods = null, preHooks = null, postHooks = null) {
     let schema = new mongoose.Schema(structure, { autoIndex: process.env.DISABLE_AUTO_INDEX })
 
     schema.plugin(autopopulate)
@@ -83,6 +83,13 @@ class Mongo {
     schema.set('toObject', { getters: true })
     schema.set('toJSON', { getters: true })
 
+    schema.pre(['updateOne','updateMany','findOneAndUpdate'], function(next) {
+      if (!this.modifiedAt) {
+        this.update({ $set: { modifiedAt: Date.now() } })
+      }
+      next()
+    });
+
     // Look for Encrypted fields...
     const encryptedFields = Object.keys(structure).filter(key => !!structure[key].encrypted).filter(key => key)
     if (encryptedFields && encryptedFields.length && process.env.MONGO_ENCRYPTION_KEY && process.env.MONGO_SIGNATURE_KEY) {
@@ -90,6 +97,18 @@ class Mongo {
     }
 
     if (methods) schema.methods = { ...schema.methods, ...methods }
+
+    if (preHooks) {
+      preHooks.forEach(itm => {
+        schema.pre(itm.type, itm.method);
+      })
+    }
+
+    if (postHooks) {
+      postHooks.forEach(itm => {
+        schema.post(itm.type, itm.method);
+      })
+    }
 
     return mongoose.model(name, schema)
   }

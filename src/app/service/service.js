@@ -105,25 +105,6 @@ class BaseService {
     return this._mongodb.aggregate(params).exec()
   }
 
-  // prepare(obj) {
-  //   // console.log(this._mongodb.schema.toObject())
-  //   // obj = obj.toHexString()
-  //   console.log(typeof obj._id)
-  //   obj.id = obj._id
-  //   delete obj._id
-  //   delete obj.deleted
-  //   delete obj.__v
-  //   return obj
-  // }
-
-  // update(id, data) {
-
-  // }
-
-  // delete() {
-
-  // }
-
 }
 
 module.exports = BaseService
