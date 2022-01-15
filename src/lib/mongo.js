@@ -30,7 +30,7 @@ class Mongo {
 
   async connectToDatabase() {
     if (!this.isConnected) {
-      if (process.env.NODE_ENV !== 'production') logger.info('## using new database connection')
+      if (process.env.NODE_ENV === 'local') logger.info('## using new database connection')
       if (process.env.NODE_ENV === 'local' && mongo.ssl) {
         logger.warn('####################################')
         logger.warn('####################################')
@@ -42,7 +42,7 @@ class Mongo {
       const db = await mongoose.connect(mongo.uri, this._getOptions())
       this.isConnected = db.connections[0].readyState
     } else {
-      logger.info('=> using existing database connection')
+      if (process.env.NODE_ENV === 'local') logger.info('=> using existing database connection')
       return Promise.resolve()
     }
   }
@@ -82,13 +82,6 @@ class Mongo {
 
     schema.set('toObject', { getters: true })
     schema.set('toJSON', { getters: true })
-
-    schema.pre(['updateOne','updateMany','findOneAndUpdate'], function(next) {
-      if (!this.modifiedAt) {
-        this.update({ $set: { modifiedAt: Date.now() } })
-      }
-      next()
-    });
 
     // Look for Encrypted fields...
     const encryptedFields = Object.keys(structure).filter(key => !!structure[key].encrypted).filter(key => key)

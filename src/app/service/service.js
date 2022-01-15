@@ -46,7 +46,7 @@ class BaseService {
     if (!query) throw new Error('Query is invalid')
     if (!updates) throw new Error('Update are invalid')
 
-    updates.modifiedAt = Date.now()
+    // updates.modifiedAt = Date.now()
 
     options.new = true
     options.upsert = false
@@ -59,7 +59,7 @@ class BaseService {
     if (!query) throw new Error('query is required')
     if (!data) throw new Error('data is required')
 
-    data.modifiedAt = Date.now()
+    // data.modifiedAt = Date.now()
 
     const insertData = {
       _id: uuid(),
