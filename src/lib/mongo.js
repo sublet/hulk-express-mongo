@@ -5,7 +5,8 @@ const logger = require('../app/logger')
 const configLib = require('../app/config')
 const { MongoClient } = require('mongodb')
 const autopopulate = require('mongoose-autopopulate')
-const encrypt = require('mongoose-encryption');
+const encrypt = require('mongoose-encryption')
+const AutoIncrement = require('mongoose-sequence')(mongoose)
 const { mongo } = configLib(process.env.APP_FOLDER_PATH)
 
 mongoose.set('useNewUrlParser', true)
@@ -70,6 +71,20 @@ class Mongo {
     let schema = new mongoose.Schema(structure, { autoIndex: process.env.DISABLE_AUTO_INDEX })
 
     schema.plugin(autopopulate)
+
+    let autoIncremenentCount = 0
+    let autoIncerementField = null
+    Object.keys(structure).forEach(key => {
+      if (structure[key].autoIncrement) {
+        autoIncerementField = key
+        autoIncremenentCount++
+      }
+    })
+    if (autoIncerementField) {
+      if (autoIncremenentCount !== 1) throw new Error('You can only have one Auto Increment Field.')
+      if (!structure[autoIncerementField].startSeqence) throw new Error('You must include a start sequence.')
+      schema.plugin(AutoIncrement, { inc_field: autoIncerementField, start_seq: structure[autoIncerementField].startSeqence })
+    }
 
     schema.method('toClient', function() {
       let obj = this.toObject()
