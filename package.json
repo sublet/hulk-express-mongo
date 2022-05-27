@@ -1,6 +1,6 @@
 {
   "name": "@sublet/hulk-express-mongo",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Pre-built Express server that allows you to get up and running quickly.",
   "main": "src/index.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "jsonwebtoken": "8.5.1",
     "ldapjs": "2.3.1",
     "lodash": "^4.17.21",
-    "mongodb": "3.5.9",
+    "mongodb": "4.3.1",
     "mongoose": "5.9.21",
     "mongoose-autopopulate": "0.12.2",
     "mongoose-encryption": "2.1.1",

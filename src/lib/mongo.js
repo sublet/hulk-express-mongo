@@ -9,10 +9,10 @@ const encrypt = require('mongoose-encryption')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 const { mongo } = configLib(process.env.APP_FOLDER_PATH)
 
-mongoose.set('useNewUrlParser', true)
-mongoose.set('useFindAndModify', false)
-mongoose.set('useCreateIndex', true)
-mongoose.set('useUnifiedTopology', true)
+// mongoose.set('useNewUrlParser', true)
+// mongoose.set('useFindAndModify', false)
+// mongoose.set('useCreateIndex', true)
+// mongoose.set('useUnifiedTopology', true)
 
 /*
  * Notes:

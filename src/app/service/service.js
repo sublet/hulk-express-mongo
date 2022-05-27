@@ -76,8 +76,13 @@ class BaseService {
       .exec()
   }
 
-  async findOne(query) {
-    const results = await this._mongodb.findOne(query).exec()
+  async findOne(query, { select = null, populate = null } = {}) {
+    let cursor = this._mongodb.findOne(query)
+
+    if (populate) populate.map(itm => cursor = cursor.populate(itm))
+    if (select) cursor = cursor.select(select)
+
+    let results = await cursor.exec()
     return (results) ? results.toClient() : results
   }
   
