@@ -37,7 +37,7 @@ class Server {
   }
 
   setupAndCreate() {
-    _server.setup()
+    _server.setup(this._config)
     _server.create()
   }
 

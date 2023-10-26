@@ -30,15 +30,24 @@ class BaseService {
     return results
   }
 
-  async readMany(query, { limit = 50, select = null, populate = null, sort = null, skip = null } = {}) {
-    let cursor = this._mongodb.find(query)
+  async readMany(query, { isLean = false, limit = 50, select = null, populate = null, sort = null, skip = null } = {}) {
+    let cursor = null
+    if (isLean) {
+      cursor = this._mongodb.find(query).lean()
+    } else {
+      cursor = this._mongodb.find(query)
+    }
     if (limit) cursor.limit(+limit)
-    if (populate) populate.map(itm => cursor = cursor.populate(itm))
+    if (populate) {
+      populate.forEach(itm => {
+        cursor = cursor.populate(itm)
+      })
+    }
     if (sort) cursor = cursor.sort(sort)
     if (select) cursor = cursor.select(select)
     if (skip) cursor = cursor.skip(+skip)
     let results = await cursor.exec()
-    return results.map(obj => obj.toClient())
+    return results.map(obj => (obj && obj.toClient) ? obj.toClient() : obj)
   }
 
   // https://davidburgos.blog/return-updated-document-mongoose/
@@ -76,14 +85,23 @@ class BaseService {
       .exec()
   }
 
-  async findOne(query, { select = null, populate = null } = {}) {
-    let cursor = this._mongodb.findOne(query)
+  async findOne(query, { isLean = false, select = null, populate = null } = {}) {
+    let cursor = null
+    if (isLean) {
+      cursor = this._mongodb.findOne(query).lean()
+    } else {
+      cursor = this._mongodb.findOne(query)
+    }
 
-    if (populate) populate.map(itm => cursor = cursor.populate(itm))
+    if (populate) {
+      populate.forEach(itm => {
+        cursor = cursor.populate(itm)
+      })
+    }
     if (select) cursor = cursor.select(select)
 
     let results = await cursor.exec()
-    return (results) ? results.toClient() : results
+    return (results && results.toClient) ? results.toClient() : results
   }
   
   async count() {
